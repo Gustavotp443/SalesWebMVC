@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SalesWebMVC.Models;
+using SalesWebMVC.Models.ViewModels;
 using System.Diagnostics;
 
 namespace SalesWebMVC.Controllers
@@ -20,6 +20,7 @@ namespace SalesWebMVC.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["message"] = "Text whatever";
             return View();
         }
 
