@@ -7,9 +7,11 @@ namespace SalesWebMVC.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public DateTime BirthDate { get; set; }
+
+        public DateTime _birthDate;
         public double BaseSalary { get; set; }
         public Departments Department { get; set; } //ManyToOne
+        public int DepartmentId { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>(); //OneToMany
 
         public Seller() { }
@@ -19,9 +21,15 @@ namespace SalesWebMVC.Models
             Id = id;
             Name = name;
             Email = email;
-            BirthDate = birthDate;
+            _birthDate = birthDate.ToUniversalTime();
             BaseSalary = baseSalary;
             Department = department;
+        }
+
+        public DateTime BirthDate
+        {
+            get { return _birthDate; }
+            set { _birthDate = value.ToUniversalTime(); }
         }
 
         public void AddSales(SalesRecord sr) { Sales.Add(sr);}

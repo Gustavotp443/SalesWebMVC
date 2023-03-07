@@ -17,15 +17,17 @@ builder.Services.AddScoped<SeedingService>();
 builder.Services.AddScoped<SellerService>();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-
-
+    SeedingService.Seed(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    var seedingService = app.Services.GetRequiredService<SeedingService>();
-    seedingService.Seed();
+
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
