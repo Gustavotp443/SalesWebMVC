@@ -3,15 +3,21 @@ using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SalesWebMVCContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("SalesWebMVCContext"),
-    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.32-mysql")
-    ?? throw new InvalidOperationException("Connection string 'SalesWebMVCContext' not found.")));
+builder.Services.AddEntityFrameworkNpgsql()
+    .AddDbContext<SalesWebMVCContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("SalesWebMVCContext")
+     ?? throw new InvalidOperationException("Connection string 'SalesWebMVCContext' not found.")));
+
+builder.Services.AddTransient<SeedingService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -31,5 +37,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+var seedingService = app.Services.GetRequiredService<SeedingService>();
+seedingService.Seed();
 
 app.Run();
