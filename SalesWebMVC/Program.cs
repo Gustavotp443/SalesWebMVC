@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
+using SalesWebMVC.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEntityFrameworkNpgsql()
@@ -8,11 +9,12 @@ builder.Services.AddEntityFrameworkNpgsql()
     options.UseNpgsql(builder.Configuration.GetConnectionString("SalesWebMVCContext")
      ?? throw new InvalidOperationException("Connection string 'SalesWebMVCContext' not found.")));
 
-builder.Services.AddScoped<SeedingService>();
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SeedingService>();
+builder.Services.AddScoped<SellerService>();
 var app = builder.Build();
 
 
