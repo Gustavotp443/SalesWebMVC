@@ -2,13 +2,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMVC.Data;
 using SalesWebMVC.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 builder.Services.AddEntityFrameworkNpgsql()
     .AddDbContext<SalesWebMVCContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("SalesWebMVCContext")
      ?? throw new InvalidOperationException("Connection string 'SalesWebMVCContext' not found.")));
 
+
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var enUs = new CultureInfo("en-US");
+    options.DefaultRequestCulture = new RequestCulture(enUs);
+    options.SupportedCultures = new List<CultureInfo> { enUs };
+    options.SupportedUICultures = new List<CultureInfo> { enUs };
+});
 
 
 // Add services to the container.
@@ -19,6 +33,8 @@ builder.Services.AddScoped<SellerService>();
 builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
+
+app.UseRequestLocalization();
 
 using (var scope = app.Services.CreateScope())
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 namespace SalesWebMVC.Models
 {
@@ -6,9 +7,17 @@ namespace SalesWebMVC.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [DataType(DataType.EmailAddress)]       //aciona o App de email padrão
         public string Email { get; set; }
 
+        [Display(Name = "Birth Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}")]
         public DateTime _birthDate;
+
+        [Display(Name = "Base Salary")]
+        [DisplayFormat(DataFormatString="{0:f2}")]
         public double BaseSalary { get; set; }
         public Departments Department { get; set; } //ManyToOne
         public int DepartmentId { get; set; }
@@ -29,6 +38,7 @@ namespace SalesWebMVC.Models
         public DateTime BirthDate
         {
             get { return _birthDate; }
+
             set { _birthDate = value.ToUniversalTime(); }
         }
 
