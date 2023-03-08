@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 namespace SalesWebMVC.Models
@@ -26,7 +26,6 @@ namespace SalesWebMVC.Models
         public double BaseSalary { get; set; }
 
         public Departments Department { get; set; } //ManyToOne
-
         public int DepartmentId { get; set; }
 
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>(); //OneToMany
